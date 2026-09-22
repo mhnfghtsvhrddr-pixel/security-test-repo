@@ -1,8 +1,12 @@
 import hashlib
 
 
+import hashlib, os
+
 def hash_password(password):
-    return hashlib.md5(password.encode()).hexdigest()
+    salt = os.urandom(16)
+    pwd_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100_000)
+    return salt.hex() + ':' + pwd_hash.hex()
 
 
 def get_user(username, cursor):
