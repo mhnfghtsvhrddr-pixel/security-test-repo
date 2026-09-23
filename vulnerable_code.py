@@ -1,8 +1,12 @@
 import hashlib
 
 
+import bcrypt
+
 def hash_password(password):
-    return hashlib.md5(password.encode()).hexdigest()
+    # bcrypt adds a random salt and uses a configurable work factor to make hashing expensive
+    hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+    return hashed.decode()
 
 
 def get_user(username, cursor):
